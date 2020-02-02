@@ -3,7 +3,7 @@
 # IPv6Extender.py
 # Last Modified: 2/02/2020
 # Author:        Arthur Mills
-# License:       GNU General Public License, version 3
+# License:       GNU Lesser General Public License, version 3
 # Description:
 # Polls IP addresses from Infoblox IPAM CSV export;
 # captures all IP address data and converts IPv6 addresses into 128-bit notation
