@@ -29,6 +29,7 @@ import csv
 import argparse
 import ipaddress
 
+
 # Function declarations
 def extend_ip(ipaddr):
     addr = ipaddr
