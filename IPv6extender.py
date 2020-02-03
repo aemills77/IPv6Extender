@@ -29,7 +29,6 @@ import csv
 import argparse
 import ipaddress
 
-
 # Function declarations
 def extend_ip(ipaddr):
     addr = ipaddr
@@ -42,7 +41,7 @@ def extend_ip(ipaddr):
 # Main program
 addrfile = open("ExtendedAddresses.csv", "ab")
 
-parser = argparse.ArgumentParser(description="Converts Infoblox IPAM exported IPv6 addresses to 128-bit notation")
+parser = argparse.ArgumentParser(description="Converts Infoblox exported IPv6 address IPAM data to 128-bit notation")
 parser.add_argument("--file", required=True, default=None, type=str, help="name of source CSV file")
 
 args = parser.parse_args()
