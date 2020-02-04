@@ -1,7 +1,7 @@
 #!/usr/bin/env
 
 # IPv6extender.py
-# Last Modified: 2/02/2020
+# Last Modified: 2/04/2020
 # Author:        Arthur Mills
 # License:       GNU Lesser General Public License, version 3
 # Description:
@@ -19,7 +19,7 @@ try:
     input = raw_input
 except NameError:
     pass
-# End compatibility
+# End compatibility (delete section if using Python 3)
 
 # Python module imports
 import sys
