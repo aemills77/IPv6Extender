@@ -14,7 +14,6 @@
 # Python 2 -> Python 3 compatibility
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 try:
     input = raw_input
@@ -40,31 +39,36 @@ def extend_ip(ipaddr):
 
 
 # Main program
-addrfile = open("ExtendedAddresses.csv", "ab")
-
-parser = argparse.ArgumentParser(description="Converts Infoblox exported IPv6 address IPAM data to 128-bit notation")
+parser = argparse.ArgumentParser(description="Utility to convert exported Infoblox IPv6 IPAM data to 128-bit notation")
 parser.add_argument("--file", required=True, default=None, type=str, help="name of source CSV file")
-
 args = parser.parse_args()
-filename = args.file
+input_file = args.file
 
-if os.path.isfile(filename) is False:
+if os.path.isfile(input_file) is False:
     sys.exit("Error: Invalid file")
+output_file = "extended-" + input_file
 
-with open(filename, "rb") as ipamfile:
-    csv_read = csv.reader(ipamfile)
-    for row in csv_read:
-        current_ip = unicode(row[1], "utf-8")
-        try:
-            valid_ip = bool(ipaddress.ip_address(current_ip))
-        except ValueError:
-            valid_ip = False
-        if valid_ip is True:
-            current_ip = extend_ip(current_ip)
-            addrfile.write(current_ip)
-            addrfile.write(",\n")
+row_count = sum(1 for row in csv.reader(input_file))
 
-print("IP data exported -> ExtendedAddresses.csv")
+with open(input_file, "r") as ipamfile:
+    csv_read = csv.reader(ipamfile, delimiter=",")
+    with open(output_file, "a") as addrfile:
+        csv_write = csv.writer(addrfile, delimiter=",")
+        for row in csv_read:
+            for i in range(row_count):
+                current_ip = bytes.decode(row[i])
+                try:
+                    valid_ip = bool(ipaddress.ip_address(current_ip))
+                except ValueError:
+                    valid_ip = False
+                    current_ip = bytes.encode(row[i])
+                if valid_ip is True:
+                    current_ip = extend_ip(current_ip)
+                addrfile.write(current_ip)
+                addrfile.write(",")
+            addrfile.write("\n")
+
+print("IPv6 addresses extended ->", output_file)
 
 ipamfile.close()
 addrfile.close()
