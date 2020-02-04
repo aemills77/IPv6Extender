@@ -39,15 +39,20 @@ def extend_ip(ipaddr):
 
 
 # Main program
+
+# Parser description of usage from CLI
 parser = argparse.ArgumentParser(description="Utility to convert exported Infoblox IPv6 IPAM data to 128-bit notation")
 parser.add_argument("--file", required=True, default=None, type=str, help="name of source CSV file")
 args = parser.parse_args()
 input_file = args.file
 
+# Sanity check that file inputted by is valid
 if os.path.isfile(input_file) is False:
     sys.exit("Error: Invalid file")
+# Name creation of destination file based on input file name
 output_file = "extended-" + input_file
 
+# Count number of rows on source file to parse for IPv6 data
 row_count = sum(1 for row in csv.reader(input_file))
 
 with open(input_file, "r") as ipamfile:
@@ -68,6 +73,7 @@ with open(input_file, "r") as ipamfile:
                 addrfile.write(",")
             addrfile.write("\n")
 
+# Expansion completed message for user including destination file
 print("IPv6 addresses extended ->", output_file)
 
 ipamfile.close()
